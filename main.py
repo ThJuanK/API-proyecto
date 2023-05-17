@@ -18,26 +18,17 @@ coleccion = db['proyecto-tesis']
 
 # Correo
 remitente = 'jcayalaa@itc.edu.co'
-destinatario = 'juanksr0@gmail.com'
-asunto = "correo de prueba desde Python"
-cuerpo = '<h1>Hola mundo!</h1>'
+asunto = "Confirmación de la renovación"
 
 contra = "JuanK112406"
 puerto_smtp = 587
 
 correo = MIMEMultipart()
 correo['From'] = remitente
-correo['To'] = destinatario
 correo['Subject'] = asunto
-correo.attach(MIMEText(cuerpo, 'html'))
 
-# Conexión al servidor SMTP
-with smtplib.SMTP("smtp-mail.outlook.com", puerto_smtp) as servidor:
-    servidor.starttls()  # Habilitar TLS (opcional)
-    servidor.login(remitente, contra)  # Iniciar sesión en el servidor SMTP
-    servidor.send_message(correo)  # Enviar correo electrónico
-    print('El correo ha sido enviado correctamente.')
-
+def cuerpo(nombre: str):
+    return  f'<h1>Gracias por renovar tu suscripción {nombre}!!</h1><h4>Ve a nuestro sitio para revisar nuestras ultimas novedades! <a href = "#">Vamos a la pagina!</a> </h4>'
 
 @app.get('/')
 def index():
@@ -46,5 +37,20 @@ def index():
 @app.get('/id/{_id}')
 def enviar_correo(_id: str):
     persona = coleccion.find_one({"_id": ObjectId(_id)})
-    return {'name': persona['nombre']}
+
+    destinatario = persona['correo']
+    correo['To'] = destinatario
+
+    correo.attach(MIMEText(cuerpo(persona['nombre']), 'html'))
+    cuerpo(persona['nombre'])
+    # Conexión al servidor SMTP
+    with smtplib.SMTP("smtp-mail.outlook.com", puerto_smtp) as servidor:
+        servidor.starttls()  # Habilitar TLS (opcional)
+        servidor.login(remitente, contra)  # Iniciar sesión en el servidor SMTP
+        servidor.send_message(correo)  # Enviar correo electrónico
+        print("correo enviado!")
+
+    return {'message': "correo enviado exitosamente.",
+            'correo': persona['correo']}
+    
 
