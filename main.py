@@ -28,7 +28,7 @@ correo['From'] = remitente
 correo['Subject'] = asunto
 
 def cuerpo(nombre: str):
-    return  f'<h1>Gracias por renovar tu suscripción {nombre}!!</h1><h4>Ve a nuestro sitio para revisar nuestras ultimas novedades! <a href = "#">Vamos a la pagina!</a> </h4>'
+    return  f'<h1>Gracias por renovar tu suscripción, {nombre}!!</h1><h4>Ve a nuestro sitio para revisar nuestras ultimas novedades! <a href = "#">Vamos a la pagina!</a> </h4>'
 
 @app.get('/')
 def index():
