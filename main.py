@@ -75,7 +75,7 @@ def comprobar_correo(_id: str):
     try:
         x = coleccion.find_one({'_id': ObjectId(_id)})
         if x is not None:
-            return False
+            return True
         else: 
             return False
     
