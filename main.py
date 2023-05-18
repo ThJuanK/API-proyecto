@@ -1,5 +1,7 @@
 from bson import ObjectId
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from pymongo import MongoClient
 
 import smtplib
@@ -30,6 +32,21 @@ correo['Subject'] = asunto
 def cuerpo(nombre: str):
     return  f'<h1>Gracias por renovar tu suscripción, {nombre}!!</h1><h4>Ve a nuestro sitio para revisar nuestras ultimas novedades! <a href = "#">Vamos a la pagina!</a> </h4>'
 
+
+# permisos de política de seguridad CORS
+origins = [
+    "http://localhost:4200",
+    "https://confirmacion-pa-etitc.netlify.app/"
+] 
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+) 
+
 @app.get('/')
 def index():
     return{'message': 'todo OK'}
@@ -57,7 +74,6 @@ def enviar_correo(_id: str):
 def comprobar_correo(_id: str):
     try:
         x = coleccion.find_one({'_id': ObjectId(_id)})
-
         if x is not None:
             return True
         else: 
