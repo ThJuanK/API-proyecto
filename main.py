@@ -56,11 +56,13 @@ def enviar_correo(_id: str):
 @app.get('/comprobar/{_id}')
 def comprobar_correo(_id: str):
     try:
-        x = coleccion.find_one({'_id': _id})
-        if not x:
+        x = coleccion.find_one({'_id': ObjectId(_id)})
+
+        if x is not None:
             return True
+        else: 
+            return False
     
     except(Exception):
         return False
     
-    finally: return False
