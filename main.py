@@ -75,10 +75,10 @@ def comprobar_correo(_id: str):
     try:
         x = coleccion.find_one({'_id': ObjectId(_id)})
         if x is not None:
-            return True
+            return {'existe': True}
         else: 
-            return False
+            return {'existe': False}
     
     except(Exception):
-        return False
+        return {'existe': False}
     
