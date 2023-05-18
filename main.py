@@ -53,4 +53,14 @@ def enviar_correo(_id: str):
     return {'message': "correo enviado exitosamente.",
             'correo': persona['correo']}
     
-
+@app.get('/comprobar/{_id}')
+def comprobar_correo(_id: str):
+    try:
+        x = coleccion.find_one({'_id': _id})
+        if not x:
+            return True
+    
+    except(Exception):
+        return False
+    
+    finally: return False
