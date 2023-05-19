@@ -25,9 +25,7 @@ asunto = "Confirmación de la renovación"
 contra = "JuanK112406"
 puerto_smtp = 587
 
-correo = MIMEMultipart()
-correo['From'] = remitente
-correo['Subject'] = asunto
+
 
 def cuerpo(nombre: str):
     return  f'<h1>Gracias por renovar tu suscripción, {nombre}!!</h1><h4>Ve a nuestro sitio para revisar nuestras ultimas novedades! <a href = "#">Vamos a la pagina!</a> </h4>'
@@ -53,6 +51,9 @@ def index():
 
 @app.get('/id/{_id}')
 def enviar_correo(_id: str):
+    correo = MIMEMultipart()
+    correo['From'] = remitente
+    correo['Subject'] = asunto
     persona = coleccion.find_one({"_id": ObjectId(_id)})
 
     destinatario = persona['correo']
