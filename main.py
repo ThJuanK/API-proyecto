@@ -8,6 +8,9 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+
 # API
 app = FastAPI()
 
@@ -71,6 +74,11 @@ def enviar_correo(_id: str):
         servidor.login(remitente, contra)  # Inicio de sesión 
         servidor.send_message(correo)  # Envío
         print("correo enviado!")
+
+    fecha_actual = datetime.now()
+    fecha_un_mes_despues = fecha_actual + relativedelta(months=1)
+
+    coleccion.update_one({"_id": ObjectId(_id)}, {"$set" : {"fechaVencimiento": fecha_un_mes_despues}})
 
     return {'message': "correo enviado exitosamente.",
             'correo': persona['correo']}
