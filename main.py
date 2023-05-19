@@ -35,9 +35,10 @@ def cuerpo(nombre: str):
 origins = [
     "http://localhost:4200",
     "https://confirmacion-pa-etitc.netlify.app/",
-    "https://main.d2fkzc1e3vwjdc.amplifyapp.com/"
-    "https://main.d2fkzc1e3vwjdc.amplifyapp.com/verificacion"
-    "https://main.d2fkzc1e3vwjdc.amplifyapp.com/confirmacion"
+    "https://main.d2fkzc1e3vwjdc.amplifyapp.com/",
+    "https://main.d2fkzc1e3vwjdc.amplifyapp.com"
+    "https://main.d2fkzc1e3vwjdc.amplifyapp.com/verificacion",
+    "https://main.d2fkzc1e3vwjdc.amplifyapp.com/confirmacion",
 ] 
 
 app.add_middleware(
