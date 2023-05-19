@@ -34,7 +34,8 @@ def cuerpo(nombre: str):
 # permisos de política de seguridad CORS
 origins = [
     "http://localhost:4200",
-    "https://confirmacion-pa-etitc.netlify.app/"
+    "https://confirmacion-pa-etitc.netlify.app/",
+    "https://main.d2fkzc1e3vwjdc.amplifyapp.com/"
 ] 
 
 app.add_middleware(
@@ -60,11 +61,12 @@ def enviar_correo(_id: str):
     correo['To'] = destinatario
 
     correo.attach(MIMEText(cuerpo(persona['nombre']), 'html'))
+
     # Conexión al servidor SMTP
     with smtplib.SMTP("smtp-mail.outlook.com", puerto_smtp) as servidor:
-        servidor.starttls()  # Habilitar TLS (opcional)
-        servidor.login(remitente, contra)  # Iniciar sesión en el servidor SMTP
-        servidor.send_message(correo)  # Enviar correo electrónico
+        servidor.starttls()  # Habilitar TLS 
+        servidor.login(remitente, contra)  # Inicio de sesión 
+        servidor.send_message(correo)  # Envío
         print("correo enviado!")
 
     return {'message': "correo enviado exitosamente.",
