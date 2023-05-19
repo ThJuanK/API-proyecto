@@ -59,7 +59,6 @@ def enviar_correo(_id: str):
     correo['To'] = destinatario
 
     correo.attach(MIMEText(cuerpo(persona['nombre']), 'html'))
-    cuerpo(persona['nombre'])
     # Conexión al servidor SMTP
     with smtplib.SMTP("smtp-mail.outlook.com", puerto_smtp) as servidor:
         servidor.starttls()  # Habilitar TLS (opcional)
