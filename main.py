@@ -78,7 +78,7 @@ def enviar_correo(_id: str):
     fecha_actual = datetime.now()
     fecha_un_mes_despues = fecha_actual + relativedelta(months=1)
 
-    coleccion.update_one({"_id": ObjectId(_id)}, {"$set" : {"fechaVencimiento": fecha_un_mes_despues}})
+    coleccion.update_one({"_id": ObjectId(_id)}, {"$set" : {"fechaVencimiento": fecha_un_mes_despues, "notificado": False}})
 
     return {'message': "correo enviado exitosamente.",
             'correo': persona['correo']}
