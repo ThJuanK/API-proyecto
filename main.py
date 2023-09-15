@@ -25,7 +25,7 @@ coleccion = db['proyecto-tesis']
 remitente = 'jcayalaa@itc.edu.co'
 asunto = "Confirmación de la renovación"
 
-contra = "JuanK112406"
+contra = ":)"
 puerto_smtp = 587
 
 
@@ -37,11 +37,7 @@ def cuerpo(nombre: str):
 # permisos de política de seguridad CORS
 origins = [
     "http://localhost:4200",
-    "https://confirmacion-pa-etitc.netlify.app/",
     "https://main.d2fkzc1e3vwjdc.amplifyapp.com/",
-    "https://main.d2fkzc1e3vwjdc.amplifyapp.com",
-    "https://main.d2fkzc1e3vwjdc.amplifyapp.com/verificacion",
-    "https://main.d2fkzc1e3vwjdc.amplifyapp.com/confirmacion",
 ] 
 
 app.add_middleware(
@@ -58,27 +54,31 @@ def index():
 
 @app.get('/id/{_id}')
 def enviar_correo(_id: str):
-    correo = MIMEMultipart()
-    correo['From'] = remitente
-    correo['Subject'] = asunto
+
+    # Consulta
     persona = coleccion.find_one({"_id": ObjectId(_id)})
 
-    destinatario = persona['correo']
-    correo['To'] = destinatario
-
+    correo = MIMEMultipart()
+    correo['From'] = remitente
+    correo['To'] = persona['correo']
+    correo['Subject'] = asunto
     correo.attach(MIMEText(cuerpo(persona['nombre']), 'html'))
 
     # Conexión al servidor SMTP
     with smtplib.SMTP("smtp-mail.outlook.com", puerto_smtp) as servidor:
         servidor.starttls()  # Habilitar TLS 
-        servidor.login(remitente, contra)  # Inicio de sesión 
-        servidor.send_message(correo)  # Envío
+        servidor.login(remitente, contra) 
+        servidor.send_message(correo) 
         print("correo enviado!")
 
-    fecha_actual = datetime.now()
-    fecha_un_mes_despues = fecha_actual + relativedelta(months=1)
+    fecha_suscripcion = persona['fechaVencimiento']
+    fecha_un_mes_despues = fecha_suscripcion + relativedelta(months=1)
 
-    coleccion.update_one({"_id": ObjectId(_id)}, {"$set" : {"fechaVencimiento": fecha_un_mes_despues, "notificado": False}})
+    coleccion.update_one({"_id": ObjectId(_id)}, {
+        "$set" : {
+            "fechaVencimiento": fecha_un_mes_despues, "notificado": False
+            }
+        })
 
     return {'message': "correo enviado exitosamente.",
             'correo': persona['correo']}
